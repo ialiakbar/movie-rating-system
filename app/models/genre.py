@@ -10,4 +10,4 @@ class Genre(Base):
     name = Column(String, nullable=False, unique=True)
     description = Column(String, nullable=True)
 
-    movies = relationship("Movie", secondary="genres_movie", back_populates="genres")
+    movies = relationship("Movie", secondary="movie_genres", back_populates="genres")
