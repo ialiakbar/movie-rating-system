@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+from app.config import settings
 
-app = FastAPI(title="Movie Rating System", version="0.1.0")
+app = FastAPI(title=settings.APP_NAME, version="0.1.0", debug=settings.DEBUG)
 
 
 @app.get("/")
