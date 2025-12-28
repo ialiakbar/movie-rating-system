@@ -15,10 +15,26 @@ Backend API for managing movies, directors, genres, and ratings.
 
 1. Install Poetry: `curl -sSL https://install.python-poetry.org | python3 -`
 2. Install dependencies: `poetry install`
-3. Copy `.env.example` to `.env` and configure
-4. Run migrations: `alembic upgrade head`
-5. Seed database: See scripts/ directory
-6. Start server: `poetry run uvicorn app.main:app --reload`
+3. Start PostgreSQL database: `docker-compose up -d`
+4. Copy `.env.example` to `.env` and configure (already matches docker-compose defaults)
+5. Run migrations: `alembic upgrade head`
+6. Seed database: See scripts/ directory
+7. Start server: `poetry run uvicorn app.main:app --reload`
+
+## Docker Compose
+
+The project includes a `docker-compose.yml` file to run PostgreSQL locally:
+
+```bash
+# Start database
+docker-compose up -d
+
+# Stop database
+docker-compose down
+
+# View logs
+docker-compose logs -f db
+```
 
 ## API Base Path
 
