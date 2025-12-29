@@ -19,4 +19,3 @@ async def api_exception_handler(request: Request, exc: BaseAPIException):
 @app.get("/")
 def root():
     return {"message": "Movie Rating System API"}
-

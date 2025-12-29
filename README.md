@@ -19,7 +19,7 @@ Backend API for managing movies, directors, genres, and ratings.
 4. Copy `.env.example` to `.env` and configure (already matches docker-compose defaults)
 5. Run migrations: `alembic upgrade head`
 6. Seed database: See scripts/ directory
-7. Start server: `poetry run uvicorn app.main:app --reload`
+7. Start server: `poetry run python run.py`
 
 ## Docker Compose
 
