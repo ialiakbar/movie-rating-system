@@ -10,11 +10,11 @@ from app.models.movie import Movie
 
 
 class MovieService:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session, director_repo: DirectorRepository, genre_repo: GenreRepository, movie_repo: MovieRepository):
         self.db = db
-        self.movie_repo = MovieRepository(db)
-        self.director_repo = DirectorRepository(db)
-        self.genre_repo = GenreRepository(db)
+        self.movie_repo = movie_repo
+        self.director_repo = director_repo
+        self.genre_repo = genre_repo
 
     def get_movie_list(
         self, page: int = 1, page_size: int = 10, title: Optional[str] = None, release_year: Optional[int] = None, genre: Optional[str] = None

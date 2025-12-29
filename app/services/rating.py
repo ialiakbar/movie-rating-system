@@ -7,10 +7,10 @@ from app.exceptions.rating import InvalidRatingScoreError
 
 
 class RatingService:
-    def __init__(self, db: Session):
+    def __init__(self, db: Session, rating_repo: MovieRatingRepository, movie_repo: MovieRepository):
         self.db = db
-        self.rating_repo = MovieRatingRepository(db)
-        self.movie_repo = MovieRepository(db)
+        self.rating_repo = rating_repo
+        self.movie_repo = movie_repo
 
     def create_rating(self, movie_id: int, rating_data: RatingCreate) -> RatingResponse:
         movie = self.movie_repo.get_by_id(movie_id)
