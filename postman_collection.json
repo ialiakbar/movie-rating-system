@@ -1,0 +1,968 @@
+{
+	"info": {
+		"_postman_id": "movie-rating-system-api",
+		"name": "Movie Rating System API",
+		"description": "Complete API collection for Movie Rating System with all endpoints and user stories",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "List Movies - Basic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated list of movies (first page)"
+					},
+					"response": []
+				},
+				{
+					"name": "List Movies - Filter by Title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10&title=matrix",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								},
+								{
+									"key": "title",
+									"value": "matrix",
+									"description": "Partial match, case-insensitive"
+								}
+							]
+						},
+						"description": "Search movies by title (partial match)"
+					},
+					"response": []
+				},
+				{
+					"name": "List Movies - Filter by Release Year",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10&release_year=1999",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								},
+								{
+									"key": "release_year",
+									"value": "1999",
+									"description": "Exact match"
+								}
+							]
+						},
+						"description": "Filter movies by exact release year"
+					},
+					"response": []
+				},
+				{
+					"name": "List Movies - Filter by Genre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10&genre=Action",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								},
+								{
+									"key": "genre",
+									"value": "Action",
+									"description": "Genre name (exact match)"
+								}
+							]
+						},
+						"description": "Filter movies by genre name"
+					},
+					"response": []
+				},
+				{
+					"name": "List Movies - Combined Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10&title=matrix&release_year=1999&genre=Action",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								},
+								{
+									"key": "title",
+									"value": "matrix"
+								},
+								{
+									"key": "release_year",
+									"value": "1999"
+								},
+								{
+									"key": "genre",
+									"value": "Action"
+								}
+							]
+						},
+						"description": "Filter movies using multiple criteria (AND logic)"
+					},
+					"response": []
+				},
+				{
+					"name": "List Movies - Pagination (Page 2)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies?page=2&page_size=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "page_size",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Get second page with smaller page size"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Movie by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "1"]
+						},
+						"description": "Get detailed information about a specific movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Movie by ID - Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/99999",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "99999"]
+						},
+						"description": "Error case: Movie not found (404)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie - Basic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('movie_id', response.data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"The Matrix\",\n  \"director_id\": 1,\n  \"release_year\": 1999,\n  \"cast\": \"Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss\",\n  \"genres\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"]
+						},
+						"description": "Create a new movie with title, director, release year, cast, and genres"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie - Minimal",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Inception\",\n  \"director_id\": 2,\n  \"release_year\": 2010,\n  \"genres\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"]
+						},
+						"description": "Create a movie with only required fields"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie - Invalid Director",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Test Movie\",\n  \"director_id\": 99999,\n  \"release_year\": 2020,\n  \"genres\": []\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"]
+						},
+						"description": "Error case: Invalid director_id (422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Movie - Invalid Genre",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Test Movie\",\n  \"director_id\": 1,\n  \"release_year\": 2020,\n  \"genres\": [99999]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies"]
+						},
+						"description": "Error case: Invalid genre_id (422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie - Title Only",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"The Matrix Reloaded\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}"]
+						},
+						"description": "Partial update: Update only the title"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie - Multiple Fields",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"The Matrix (Updated)\",\n  \"release_year\": 2000,\n  \"cast\": \"Updated cast list\",\n  \"genres\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}"]
+						},
+						"description": "Update multiple fields including genres"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie - Sync Genres",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"genres\": [1]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}"]
+						},
+						"description": "Update only genres (replaces existing genres)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Movie - Not Found",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Title\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/99999",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "99999"]
+						},
+						"description": "Error case: Movie not found (404)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Movie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}"]
+						},
+						"description": "Delete a movie (returns 204 No Content)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Movie - Not Found",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/99999",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "99999"]
+						},
+						"description": "Error case: Movie not found (404)"
+					},
+					"response": []
+				}
+			],
+			"description": "All movie-related endpoints"
+		},
+		{
+			"name": "Ratings",
+			"item": [
+				{
+					"name": "Create Rating - Valid Score",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('rating_id', response.data.rating_id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 8\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}", "ratings"]
+						},
+						"description": "Create a rating with a valid score (1-10)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rating - Minimum Score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}", "ratings"]
+						},
+						"description": "Create rating with minimum score (1)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rating - Maximum Score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}", "ratings"]
+						},
+						"description": "Create rating with maximum score (10)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rating - Invalid Score (Too Low)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}", "ratings"]
+						},
+						"description": "Error case: Score too low (422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rating - Invalid Score (Too High)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 11\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/{{movie_id}}/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "{{movie_id}}", "ratings"]
+						},
+						"description": "Error case: Score too high (422)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rating - Movie Not Found",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 8\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/movies/99999/ratings",
+							"host": ["{{base_url}}"],
+							"path": ["api", "v1", "movies", "99999", "ratings"]
+						},
+						"description": "Error case: Movie not found (404)"
+					},
+					"response": []
+				}
+			],
+			"description": "All rating-related endpoints"
+		},
+		{
+			"name": "User Stories",
+			"item": [
+				{
+					"name": "Story 1: Browse Movies",
+					"item": [
+						{
+							"name": "1.1 - View All Movies (First Page)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies?page=1&page_size=10",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "page_size",
+											"value": "10"
+										}
+									]
+								},
+								"description": "User wants to see the first page of movies"
+							},
+							"response": []
+						},
+						{
+							"name": "1.2 - Search by Title",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies?title=matrix",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"],
+									"query": [
+										{
+											"key": "title",
+											"value": "matrix"
+										}
+									]
+								},
+								"description": "User searches for movies containing 'matrix' in title"
+							},
+							"response": []
+						},
+						{
+							"name": "1.3 - Filter by Year",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies?release_year=1999",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"],
+									"query": [
+										{
+											"key": "release_year",
+											"value": "1999"
+										}
+									]
+								},
+								"description": "User filters movies released in 1999"
+							},
+							"response": []
+						},
+						{
+							"name": "1.4 - Filter by Genre",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies?genre=Action",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"],
+									"query": [
+										{
+											"key": "genre",
+											"value": "Action"
+										}
+									]
+								},
+								"description": "User filters movies by Action genre"
+							},
+							"response": []
+						},
+						{
+							"name": "1.5 - View Movie Details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/1",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "1"]
+								},
+								"description": "User clicks on a movie to see full details including ratings"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Browse and search movies"
+				},
+				{
+					"name": "Story 2: Rate a Movie",
+					"item": [
+						{
+							"name": "2.1 - View Movie to Rate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/1",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "1"]
+								},
+								"description": "User views movie details before rating"
+							},
+							"response": []
+						},
+						{
+							"name": "2.2 - Submit Rating",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"score\": 9\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/1/ratings",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "1", "ratings"]
+								},
+								"description": "User submits a rating of 9/10"
+							},
+							"response": []
+						},
+						{
+							"name": "2.3 - Verify Rating Updated",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/1",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "1"]
+								},
+								"description": "User checks that average rating and count updated"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Rate a movie and see updated statistics"
+				},
+				{
+					"name": "Story 3: Admin - Add Movie",
+					"item": [
+						{
+							"name": "3.1 - Create New Movie",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"The Dark Knight\",\n  \"director_id\": 3,\n  \"release_year\": 2008,\n  \"cast\": \"Christian Bale, Heath Ledger, Aaron Eckhart\",\n  \"description\": \"Batman faces the Joker\",\n  \"genres\": [1, 4]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"]
+								},
+								"description": "Admin creates a new movie entry"
+							},
+							"response": []
+						},
+						{
+							"name": "3.2 - Verify Movie Created",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "{{movie_id}}"]
+								},
+								"description": "Admin verifies the movie was created correctly"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Admin adds a new movie to the system"
+				},
+				{
+					"name": "Story 4: Admin - Update Movie",
+					"item": [
+						{
+							"name": "4.1 - Update Movie Title",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"The Dark Knight (Director's Cut)\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "{{movie_id}}"]
+								},
+								"description": "Admin updates movie title"
+							},
+							"response": []
+						},
+						{
+							"name": "4.2 - Update Movie Genres",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"genres\": [1, 2, 4]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "{{movie_id}}"]
+								},
+								"description": "Admin updates movie genres"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Admin updates movie information"
+				},
+				{
+					"name": "Story 5: Admin - Delete Movie",
+					"item": [
+						{
+							"name": "5.1 - Delete Movie",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "{{movie_id}}"]
+								},
+								"description": "Admin deletes a movie (cascades to ratings)"
+							},
+							"response": []
+						},
+						{
+							"name": "5.2 - Verify Movie Deleted",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/{{movie_id}}",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "{{movie_id}}"]
+								},
+								"description": "Admin verifies movie is deleted (should return 404)"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Admin removes a movie from the system"
+				},
+				{
+					"name": "Story 6: Find Highly Rated Movies",
+					"item": [
+						{
+							"name": "6.1 - Get All Movies",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies?page=1&page_size=100",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "page_size",
+											"value": "100"
+										}
+									]
+								},
+								"description": "Get all movies to check ratings"
+							},
+							"response": []
+						},
+						{
+							"name": "6.2 - View Top Rated Movie Details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/movies/1",
+									"host": ["{{base_url}}"],
+									"path": ["api", "v1", "movies", "1"]
+								},
+								"description": "View details of a highly rated movie"
+							},
+							"response": []
+						}
+					],
+					"description": "User story: Find movies with high average ratings"
+				}
+			],
+			"description": "Complete user stories demonstrating real-world usage scenarios"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": []
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": []
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "movie_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
+
