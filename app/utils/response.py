@@ -7,7 +7,7 @@ from app.schemas.response import SuccessResponse, ErrorResponse, ErrorDetail
 def success_response(data: Any, status_code: int = 200) -> JSONResponse:
     """Create a success response with the standard envelope format."""
     response = SuccessResponse(status="success", data=data)
-    return JSONResponse(content=response.model_dump(), status_code=status_code)
+    return JSONResponse(content=response.model_dump(mode="json"), status_code=status_code)
 
 
 def error_response(message: str, status_code: int = 400) -> JSONResponse:
