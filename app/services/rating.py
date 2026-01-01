@@ -21,6 +21,7 @@ class RatingService:
             raise MovieNotFoundError(movie_id)
 
         if not (1 <= rating_data.score <= 10):
+            logger.warning(f"Invalid rating value (movie_id={movie_id}, rating={rating_data.score}, route=/api/v1/movies/{movie_id}/ratings)")
             raise InvalidRatingScoreError(rating_data.score)
 
         rating = self.rating_repo.create(movie_id=movie_id, score=rating_data.score)
