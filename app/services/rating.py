@@ -24,7 +24,10 @@ class RatingService:
             logger.warning(f"Invalid rating value (movie_id={movie_id}, rating={rating_data.score}, route=/api/v1/movies/{movie_id}/ratings)")
             raise InvalidRatingScoreError(rating_data.score)
 
-        rating = self.rating_repo.create(movie_id=movie_id, score=rating_data.score)
-        logger.info(f"Rating saved successfully (movie_id={movie_id}, rating={rating_data.score})")
-
-        return RatingResponse(rating_id=rating.id, movie_id=rating.movie_id, score=rating.score, created_at=rating.rated_at)
+        try:
+            rating = self.rating_repo.create(movie_id=movie_id, score=rating_data.score)
+            logger.info(f"Rating saved successfully (movie_id={movie_id}, rating={rating_data.score})")
+            return RatingResponse(rating_id=rating.id, movie_id=rating.movie_id, score=rating.score, created_at=rating.rated_at)
+        except Exception as e:
+            logger.error(f"Failed to save rating (movie_id={movie_id}, rating={rating_data.score})", exc_info=True)
+            raise
