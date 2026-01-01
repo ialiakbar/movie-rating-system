@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 from fastapi import APIRouter, Depends, Query
 from app.services.movie import MovieService
@@ -5,6 +6,7 @@ from app.services.dependencies import get_movie_service
 from app.schemas.movie import MovieCreate, MovieUpdate
 from app.utils.response import success_response, empty_response
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -17,8 +19,13 @@ def get_movies(
     genre: Optional[str] = Query(None),
     service: MovieService = Depends(get_movie_service),
 ):
-    result = service.get_movie_list(page=page, page_size=page_size, title=title, release_year=release_year, genre=genre)
-    return success_response(data=result.model_dump())
+    logger.info(f"Fetching movies list (route=/api/v1/movies, page={page}, page_size={page_size})")
+    try:
+        result = service.get_movie_list(page=page, page_size=page_size, title=title, release_year=release_year, genre=genre)
+        return success_response(data=result.model_dump())
+    except Exception as e:
+        logger.error(f"Failed to fetch movies list (route=/api/v1/movies, page={page}, page_size={page_size})", exc_info=True)
+        raise
 
 
 @router.get("/{movie_id}", response_model=None)
@@ -43,4 +50,3 @@ def update_movie(movie_id: int, movie_data: MovieUpdate, service: MovieService =
 def delete_movie(movie_id: int, service: MovieService = Depends(get_movie_service)):
     service.delete_movie(movie_id)
     return empty_response()
-
