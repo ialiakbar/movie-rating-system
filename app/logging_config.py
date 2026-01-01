@@ -12,3 +12,7 @@ def setup_logging():
             logging.StreamHandler(sys.stdout)
         ]
     )
+    # Suppress SQLAlchemy query logs
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+    logging.getLogger("sqlalchemy.engine.Engine").setLevel(logging.WARNING)
+    logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
