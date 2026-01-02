@@ -1,10 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from app.config import settings
+from app.logging_config import setup_logging
 from app.controller.movie import router as movie_router
 from app.controller.rating import router as rating_router
 from app.exceptions.base import BaseAPIException
 from app.utils.response import error_response
+
+# Setup logging configuration
+setup_logging()
 
 app = FastAPI(title=settings.APP_NAME, version="0.1.0", debug=settings.DEBUG)
 
